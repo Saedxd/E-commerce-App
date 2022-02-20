@@ -1,0 +1,75 @@
+name: commerce_app
+description: A new Flutter project.
+
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.7.0 <3.0.0"
+
+dependencies:
+
+  flutter:
+    sdk: flutter
+
+# bottom motion bar
+  motion_tab_bar: ^0.1.5
+  #....
+  cupertino_icons: ^1.0.2
+  #image picker
+  image_picker: ^0.8.4+1
+  # firebase dependencies
+  firebase_core: ^1.12.0
+  firebase_auth: ^3.3.6
+  #google fonts
+  google_fonts: ^2.2.0
+  #auto validation
+  auto_validate: ^1.0.8
+  form_field_validator: ^1.1.0
+  #imageslider package
+  carousel_pro: ^1.0.0
+  #Connect Database
+  mysql1: ^0.19.2
+  #Firebase messagges
+  firebase_messaging: ^11.2.6
+  flutter_local_notifications: ^5.0.0+1
+
+
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+
+  uses-material-design: true
+
+  assets:
+    - Assets/Images/
+
+
+
+
+  # An image asset can refer to one or more resolution-specific "variants", see
+  # https://flutter.dev/assets-and-images/#resolution-aware.
+
+  # For details regarding adding assets from package dependencies, see
+  # https://flutter.dev/assets-and-images/#from-packages
+
+
+  # fonts:
+  #   - family: Schyler
+  #     fonts:
+  #       - asset: fonts/Schyler-Regular.ttf
+  #       - asset: fonts/Schyler-Italic.ttf
+  #         style: italic
+  #   - family: Trajan Pro
+  #     fonts:
+  #       - asset: fonts/TrajanPro.ttf
+  #       - asset: fonts/TrajanPro_Bold.ttf
+  #         weight: 700
+  #
+  # For details regarding fonts from package dependencies,
+  # see https://flutter.dev/custom-fonts/#from-packages
