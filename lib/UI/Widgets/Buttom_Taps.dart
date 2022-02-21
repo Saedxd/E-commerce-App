@@ -53,7 +53,6 @@ class _MyStatefulButtom_tabs extends State<Buttom_tabs> with SingleTickerProvide
   Widget build(BuildContext context) {
   return SafeArea(
     child: Scaffold(
-    
     body: Container(
       child: MotionTabBarView(
 
@@ -69,7 +68,6 @@ class _MyStatefulButtom_tabs extends State<Buttom_tabs> with SingleTickerProvide
     bottomNavigationBar :
     MotionTabBar(
     labels: [
-
     "Account", "Home", "Favorite"
     ],
 

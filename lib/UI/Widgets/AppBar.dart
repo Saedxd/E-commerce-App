@@ -15,7 +15,7 @@ class Appbar_Tool extends StatelessWidget implements PreferredSizeWidget {
 
       title: Text(text2),
       centerTitle: true,
-      backgroundColor: Colors.green,
+      backgroundColor: Colors.pink[900],
       actions: [
         IconButton(
             onPressed: () {

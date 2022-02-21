@@ -13,10 +13,9 @@ import 'package:flutter/material.dart';
 import 'package:commerce_app/UI/Widgets/Cards.dart';
 
 class HomePage extends StatefulWidget {
-
+//fix the cursaul on homepage
   @override
   _HomePageState createState() => _HomePageState();
-
 }
 
 // child: FlatButton(
@@ -54,75 +53,75 @@ class _HomePageState extends State<HomePage> {
           text2: "Home",
           WantSearch: true,
         ),
-        body:
-              SingleChildScrollView(
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        body: SingleChildScrollView(
+          child: Column(
+              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                SizedBox(
+                  height: 7,
+                ),
+                SizedBox(
+                  child: Carousel(
+                    dotIncreasedColor: Colors.amberAccent,
+                    boxFit: BoxFit.cover,
+                    dotColor: Colors.black,
+                    dotSpacing: 10,
+                    dotSize: 6,
+                    indicatorBgPadding: 0,
+                    dotPosition: DotPosition.bottomRight,
+                    dotVerticalPadding: 10,
+                    dotHorizontalPadding: 55,
+                    dotBgColor: Colors.transparent,
+                    images: [
+                      Image.asset("Assets/Images/logo11.png"),
+                      Image.asset("Assets/Images/logo4.png"),
+                      Image.asset("Assets/Images/logo12.png"),
+                    ],
+                  ),
+                  width: width,
+                  height: height,
+                ),
+                Container(
+                  color: Colors.transparent,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      SizedBox(
-                        height: 7,
+                      Text(
+                        "  New Products",
+                        style: TextStyle(fontSize: 18),
                       ),
-                      SizedBox(
-                        child: Carousel(
-                          dotIncreasedColor: Colors.amberAccent,
-                          boxFit: BoxFit.cover,
-                          dotColor: Colors.black,
-                          dotSpacing: 10,
-                          dotSize: 6,
-                          indicatorBgPadding: 0,
-                          dotPosition: DotPosition.bottomRight,
-                          dotVerticalPadding: 10,
-                          dotHorizontalPadding: 55,
-                          dotBgColor: Colors.transparent,
-                          images: [
-                            Image.asset("Assets/Images/logo11.png"),
-                            Image.asset("Assets/Images/logo4.png"),
-                            Image.asset("Assets/Images/logo12.png"),
-                          ],
+                      Text("                                  "),
+                      FlatButton.icon(
+                        onPressed: () {
+                          print(mail);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => Product()),
+                          );
+                        },
+                        label: Image.asset(
+                          "Assets/Images/trans.png",
+                          height: 20,
+                          width: 20,
                         ),
-                        width: width,
-                        height: height,
-                      ),
-                      Container(
-                        color: Colors.transparent,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Text(
-                              "  New Products",
-                              style: TextStyle(fontSize: 18),
-                            ),
-                            Text("                                  "),
-                            FlatButton.icon(
-                              onPressed: () {
-                                print(mail);
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => Product()),
-                                );
-                              },
-                              label: Image.asset(
-                                "Assets/Images/trans.png",
-                                height: 20,
-                                width: 20,
-                              ),
-                              icon: Text(
-                                "See More",
-                                style: TextStyle(fontSize: 18),
-                              ),
-                            )
-                          ],
+                        icon: Text(
+                          "See More",
+                          style: TextStyle(fontSize: 18),
                         ),
-                      ),
-
-                Expanded(
+                      )
+                    ],
+                  ),
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height / 2.5,
                   child: ListView.builder(
                       scrollDirection: Axis.horizontal,
+                      // physics: NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
                       itemCount: 6,
                       itemBuilder: (context, index) {
-                        return Card2[index];
+                        return Card1[index];
                       }),
                 ),
                 Row(
@@ -133,7 +132,8 @@ class _HomePageState extends State<HomePage> {
                       style: TextStyle(fontSize: 18),
                     ),
                     Text("                                  "),
-                    FlatButton.icon(//this could be a container
+                    FlatButton.icon(
+                      //this could be a container
                       onPressed: () {
                         Navigator.push(
                           context,
@@ -152,72 +152,98 @@ class _HomePageState extends State<HomePage> {
                     )
                   ],
                 ),
-
-                      Expanded(
-                        child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            shrinkWrap: true,
-                            itemCount: 6,
-                            itemBuilder: (context, index) {
-                              return Card2[index];
-                            }),
-                      ),
-            ]),
-              ),
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height / 2.5,
+                  child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      // physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: 6,
+                      itemBuilder: (context, index) {
+                        return Card2[index];
+                      }),
+                ),
+              ]),
+        ),
       ),
     );
   }
 
-  List<Widget> Card2 = <Widget>[
+  List<Widget> Card1 = <Widget>[
     _buildCard(
-      'Cookie cream',
+      'Cookie612 cream',
       '\$5.99',
       'Assets/Images/logo1.png',
-      false,
-      true,
     ),
     _buildCard(
-      'Cookie lol',
+      'Cookie591 lol',
       '\$7.99',
       'Assets/Images/logo4.png',
-      false,
-      false,
     ),
     _buildCard(
-      'Cookie ez',
+      'Cookie482 ez4',
       '\$6.99',
       'Assets/Images/logo12.png',
-      false,
-      false,
     ),
     _buildCard(
-      'Cookie xd',
+      'Cookie383 xd1',
       '\$5.99',
       'Assets/Images/logo11.png',
-      false,
-      false,
     ),
     _buildCard(
-      'Cookie as',
+      'Cookie284 as2',
       '\$4.99',
       'Assets/Images/logo3.png',
-      false,
-      false,
     ),
     _buildCard(
-      'Cookie sa',
+      'Cookie175 sa3',
       '\$3.99',
       'Assets/Images/logo2.jpg',
-      false,
-      false,
     ),
-
   ];
-
 }
 
-Widget _buildCard(String name, String price, String imgPath, bool added,
-    bool isFavorite,  ) {
+List<Widget> Card2 = <Widget>[
+  _buildCard(
+    'Cookie60 cream',
+    '\$5.99',
+    'Assets/Images/logo1.png',
+  ),
+  _buildCard(
+    'Cookie55 lol',
+    '\$7.99',
+    'Assets/Images/logo4.png',
+  ),
+  _buildCard(
+    'Cookie40 ez4',
+    '\$6.99',
+    'Assets/Images/logo12.png',
+  ),
+  _buildCard(
+    'Cookie30 xd1',
+    '\$5.99',
+    'Assets/Images/logo11.png',
+  ),
+  _buildCard(
+    'Cookie20 as2',
+    '\$4.99',
+    'Assets/Images/logo3.png',
+  ),
+  _buildCard(
+    'Cookie10 sa3',
+    '\$3.99',
+    'Assets/Images/logo2.jpg',
+  ),
+];
+
+Widget _buildCard(
+  String name,
+  String price,
+  String imgPath,
+
+) {
+  bool added = false;
   return Padding(
       padding: EdgeInsets.only(top: 5.0, bottom: 5.0, left: 5.0, right: 5.0),
       child: InkWell(
@@ -243,17 +269,25 @@ Widget _buildCard(String name, String price, String imgPath, bool added,
                   color: Colors.white),
               child: Column(children: [
                 Padding(
-                    padding: EdgeInsets.all(5.0),
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          isFavorite
-                              ? Icon(Icons.favorite, color: Color(0xFFEF7532))
-                              : Icon(Icons.favorite_border,
-                                  color: Color(0xFFEF7532))
-                        ])),
+                  padding: EdgeInsets.all(5.0),
+                  child:
+                      Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+                    !false
+                        ? IconButton(
+                            onPressed: () {
+
+                            },
+                            icon:
+                                Icon(Icons.favorite, color: Color(0xFFEF7532)))
+                        : IconButton(
+                            onPressed: () {},
+                            icon: Icon(Icons.favorite_border,
+                                color: Color(0xFFEF7532)),
+                          )
+                  ]),
+                ),
                 Hero(
-                    tag: imgPath,
+                    tag: name,
                     child: Container(
                         height: 75.0,
                         width: 75.0,
@@ -261,19 +295,19 @@ Widget _buildCard(String name, String price, String imgPath, bool added,
                             image: DecorationImage(
                                 image: AssetImage(imgPath),
                                 fit: BoxFit.contain)))),
-                SizedBox(height: 7.0),
+                SizedBox(height: 30.0),
                 Text(price,
                     style: TextStyle(
                         color: Color(0xFFCC8053),
                         fontFamily: 'Varela',
-                        fontSize: 14.0)),
+                        fontSize: 20.0)),
                 SizedBox(height: 7.0),
                 Text(name,
                     style: TextStyle(
                         color: Color(0xFF575E67),
                         fontFamily: 'Varela',
-                        fontSize: 14.0)),
-                SizedBox(height: 90.0),
+                        fontSize: 20.0)),
+                SizedBox(height: 30.0),
                 Padding(
                     padding: EdgeInsets.all(8.0),
                     child: Container(color: Color(0xFFEBEBEB), height: 1.0)),
@@ -287,15 +321,14 @@ Widget _buildCard(String name, String price, String imgPath, bool added,
                                 color: Color(0xFFD17E50), size: 12.0),
                             Text('Add to cart',
                                 style: TextStyle(
+                                    fontWeight: FontWeight.bold,
                                     fontFamily: 'Varela',
                                     color: Color(0xFFD17E50),
-                                    fontSize: 12.0))
+                                    fontSize: 20.0))
                           ],
                           if (added) ...[
                             IconButton(
-                              onPressed: () {
-
-                              },
+                              onPressed: () {},
                               icon: Icon(Icons.remove_circle_outline,
                                   color: Color(0xFFD17E50), size: 12.0),
                             ),
@@ -304,11 +337,9 @@ Widget _buildCard(String name, String price, String imgPath, bool added,
                                     fontFamily: 'Varela',
                                     color: Color(0xFFD17E50),
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 12.0)),
+                                    fontSize: 20.0)),
                             IconButton(
-                              onPressed: () {
-
-                              },
+                              onPressed: () {},
                               icon: Icon(Icons.add_circle_outline,
                                   color: Color(0xFFD17E50), size: 12.0),
                             ),
