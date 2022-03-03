@@ -10,7 +10,7 @@ class _CartState extends State<Cart> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: Appbar_Tool(text2: "Cart",WantSearch: false,),
+      appBar: Custom_Appbar(text2: "Cart",WantSearch: false,WantCart: true,),
 
 
 

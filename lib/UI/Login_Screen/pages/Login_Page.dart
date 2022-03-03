@@ -1,13 +1,15 @@
-import 'package:commerce_app/DataBase/Database.dart';
+import 'dart:convert';
 import 'package:commerce_app/UI/Home_Screen/page/home_Page.dart';
+import 'package:commerce_app/UI/TermsOfService/Pages/Terms.dart';
 import 'package:commerce_app/UI/Widgets/Buttom_Taps.dart';
-import 'package:commerce_app/UI/Widgets/Textfield.dart';
+import 'package:commerce_app/UI/Widgets/Custom_Textfield.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:commerce_app/UI/Constants/constants.dart';
 import 'package:commerce_app/UI/Widgets/Custom_btn.dart';
 import 'package:flutter/services.dart';
-
+import 'package:form_field_validator/form_field_validator.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -15,36 +17,49 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  TextEditingController _EmailController = TextEditingController();
+  TextEditingController _PassController = TextEditingController();
+  var _formkey2 = GlobalKey<FormState>(); //password
+  var _formkey3 = GlobalKey<FormState>(); //email
+  var emailvalidaition =
+      r"^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))$";
+  User user;
 
+  var auth = FirebaseAuth.instance.currentUser;
+  bool SecureInput_pass = false;
   bool ISloading = false;
   String _loginEmail = " ";
   String _LoginPass = " ";
+  String LoginAccountFeedBack;
+  FocusNode _PasswordFocusNode;
 
-  Future<void> _alreatDialogBuilder(String error) async {
+  Future<void> _alreatDialogBuilder(String body, String title) async {
     return showDialog(
-        context: context,
         barrierDismissible: false,
         builder: (context) {
           return AlertDialog(
-            title: Text("Error"),
+            title: Text(title),
             content: Container(
-              child: Text(error),
+              child: Text(body),
             ),
-            actions: [ RaisedButton(
-              child: Text("Close"),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ) ],
-
-
+            actions: [
+              RaisedButton(
+                child: Text("Close"),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              )
+            ],
           );
-        });
+        },
+        context: context);
   }
+
   Future<String> _SignInAccount() async {
     try {
-      await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: _loginEmail, password: _LoginPass);
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: _loginEmail,
+          password: _LoginPass); //this code signs in. to your database
       return null;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
@@ -57,129 +72,536 @@ class _LoginState extends State<Login> {
       return " exception : $e";
     }
   }
+
   void SubmitForm() async {
-    //Sets the button to loading state...
-    setState(() { ISloading = true;});
-
-
-    String LoginAccountFeedBack =  await _SignInAccount(); // calls the createaccount function
-
-    // if the String not Null we have an error , so we call _alreatDialog and pass the error as a perameter.
-    if (LoginAccountFeedBack != null) {
-      _alreatDialogBuilder(LoginAccountFeedBack);
+    try {
+      //Sets the button to loading state...
       setState(() {
-        ISloading = false;
+        ISloading = true;
       });
+      LoginAccountFeedBack = await _SignInAccount();
+      // calls the SignIn function
+      // if the String not Null we have an error , so we call _alreatDialog and pass the error as a perameter.
+      if (LoginAccountFeedBack != null) {
+        _alreatDialogBuilder(LoginAccountFeedBack.toString(), "error");
+        setState(() {
+          ISloading = false;
+        });
+      } else {
+        setState(() {
+          ISloading = false;
+        });
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => Buttom_tabs()),
+        );
+        // i set the email and pass to empty after using it So i dont get some Exceptions
+        _loginEmail = " ";
+        _LoginPass = " ";
+        print("done");
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+              content: Text(
+            'Signed In Successfully ',
+            style: TextStyle(color: Colors.pink, fontWeight: FontWeight.w500),
+          )),
+        );
+      }
+    } catch (e) {
+      _alreatDialogBuilder("Something Went Wrong. try again", "error");
     }
-    else {
-      setState(() {
-        ISloading = false;
-      });
-      Navigator.push(context,
-      MaterialPageRoute(builder: (context) => Buttom_tabs()),
-      );
-      print("done");
-    }
-      // THE RETURN TYPE IS null so user is "Good" and head our way to the homepage.
-    }
+    // THE RETURN TYPE IS null so user is "Good" and head our way to the homepage.
+  }
 
+  @override
+  void initState() {
+    super.initState();
+    _PasswordFocusNode = FocusNode();
+    _EmailController.addListener(() {setState(() {});});
 
-  // FocusNode _PasswordFocusNode;
-  // @override
-  // void initState() { ///////////////part 4 (14:0) youtube video
-  //   // TODO: implement initState
-  //   super.initState();
-  //   _PasswordFocusNode = FocusNode();
-  // }
-  //===============================================>> HOW CAN I USE DISPOSE METHOD AND WHY
-  // @override
-  // void dispose() {
-  //   super.dispose();
-  //   // TODO: implement dispose
-  //   _PasswordFocusNode.dispose();
-  // }
+// this makes the textfeild watching what are you typing
+
+    _PassController.addListener(() {
+      setState(() {});
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    //we use dispose method to prevent memmory leaks
+    _PasswordFocusNode.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Container(
-          width: double.infinity,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
+    var h = MediaQuery.of(context).size.height;
+    var w = MediaQuery.of(context).size.width;
+
+    return SafeArea(
+        child: Scaffold(
+      body: SingleChildScrollView(
+          child: Stack(children: [
+        Container(
+          width: w,
+          height: h,
+          decoration: BoxDecoration(color: constants.blackBack),
+        ),
+        SafeArea(
+          child: Container(
+            //this section makes the page responsive.
+            width: w,
+            height: h,
+            child:
+                Column(mainAxisAlignment: MainAxisAlignment.start, children: [
               Container(
-                padding: EdgeInsets.only(
-                  top: 20,
-                ),
-                child: Text(
-                  " Welcome User \n Login to Your Account ",
-                  style: constants.boldheadding,
-                  textAlign: TextAlign.center,
-                ),
+                child: Column(children: [
+                  Image.asset(
+                    "Assets/Images/LOGO121.png",
+                    width: w / 1.5,
+                    height: h / 5,
+                  ),
+                  Container(
+                    child: Center(
+                      //\n Login to Your Account
+                      child: Text(
+                        " Welcome Back!",
+                        style: TextStyle(color: constants.white, fontSize: 23),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    child: Center(
+                      //\n Login to Your Account
+                      child: Text(
+                        " Login to Continue to Radio App",
+                        style: TextStyle(
+                            color: constants.writingONback, fontSize: 15),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+                ]),
               ),
               Container(
-                //margin: EdgeInsets.symmetric(vertical: 10,horizontal: 40),
+                padding: EdgeInsets.only(top: 10),
                 child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Container(
+                          width: w / 1.1,
+                          height: h / 10,
+                          child: Form(
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+
+                            //auto validation turns on with click or something
+                            key: _formkey3,
+                            //key depends on which textfield which 2 textfield using this code.
+                            child: TextFormField(
+                              textInputAction: TextInputAction.next,
+                              controller: _EmailController,
+                              onChanged: (value) {
+                                _loginEmail = value;
+                                _loginEmail.toLowerCase();
+                              },
+
+                              onFieldSubmitted: (value) {
+                                _loginEmail = value;
+                                _PasswordFocusNode.requestFocus();
+                              },
+                              //  focusNode:FoucesNodeEmail,
+
+                              validator: MultiValidator([
+                                // the use inputs if its is email if so activate the emailvailidator if not do that minlength thingy
+                                RequiredValidator(errorText: "Required"),
+                                EmailValidator(errorText: "That's not an Email")
+                                // MinLengthValidator(2, errorText: "Password must be Above 2 Characters")),
+                                //  MinLengthValidator(6,  errorText: "Password must be Above 6 Characters"),
+                              ]),
+                              cursorColor: Colors.black,
+                              style: TextStyle(color: Colors.white70),
+                              decoration: InputDecoration(
+                                  filled: true,
+                                  fillColor: constants.textfieldBack,
+                                  prefixIcon: Icon(Icons.email),
+                                  contentPadding:
+                                      EdgeInsets.symmetric(horizontal: 12),
+                                  hintText: "Email..",
+                                  labelText: "Email Address",
+                                  // we access constructor in statefulWidgets Throw Widget.Var
+                                  labelStyle: TextStyle(
+                                    fontSize: 18,
+                                    color: Colors.blue[900],
+                                  ),
+                                  border: OutlineInputBorder(),
+                                  suffixIcon: IconButton(
+                                    //if secureinput which is passed in argument true i need the secure Icon if not DONT NEED IT
+                                    icon: Icon(_EmailController.text.isEmpty
+                                        ? null
+                                        : Icons.close),
+                                    // : (SecureInput_pass ? Icons.remove_red_eye_outlined: Icons.security)),
+                                    onPressed: () {
+                                      setState(() {
+                                        _EmailController.clear();
+                                      });
+                                    },
+                                  )),
+                              keyboardType: TextInputType.text,
+                              //  obscureText: SecureInput_pass,
+                            ),
+                          )),
+                      Container(
+                          width: w / 1.1,
+                          height: h / 10,
+                          child: Form(
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+
+                            //auto validation turns on with click or something
+                            key: _formkey2,
+                            //key depends on which textfield which 2 textfield using this code.
+                            child: TextFormField(
+                              style: TextStyle(color: Colors.white70),
+                              // textInputAction: TextInputAction.next,
+                              controller: _PassController,
+                              onChanged: (value) {
+                                _LoginPass = value;
+                              },
+                              onFieldSubmitted: (value) {
+                                _LoginPass = value;
+                                SubmitForm();
+                              },
+                              focusNode: _PasswordFocusNode,
+                              validator: MultiValidator([
+                                // the use inputs if its is email if so activate the emailvailidator if not do that minlength thingy
+                                RequiredValidator(errorText: "Required"),
+                                MinLengthValidator(6,
+                                    errorText:
+                                        "Password must be Above 6 Characters"),
+                              ]),
+                              cursorColor: Colors.black,
+                              decoration: InputDecoration(
+                                  filled: true,
+                                  fillColor: constants.textfieldBack,
+                                  prefixIcon: Icon(Icons.lock),
+                                  contentPadding:
+                                      EdgeInsets.symmetric(horizontal: 12),
+                                  hintText: "password..",
+                                  labelText: "Password",
+                                  // we access constructor in statefulWidgets Throw Widget.Var
+                                  labelStyle: TextStyle(
+                                    fontSize: 18,
+                                    color: Colors.blue[900],
+                                  ),
+                                  border: OutlineInputBorder(),
+                                  suffixIcon: IconButton(
+                                    //if secureinput which is passed in argument true i need the secure Icon if not DONT NEED IT
+                                    icon: Icon((SecureInput_pass
+                                        ? Icons.remove_red_eye_outlined
+                                        : Icons.security)),
+                                    // : (SecureInput_pass ? Icons.remove_red_eye_outlined: Icons.security)),
+                                    onPressed: () {
+                                      setState(() {
+                                        // _EmailController.clear();
+                                        SecureInput_pass = !SecureInput_pass;
+                                      });
+                                    },
+                                  )),
+                              keyboardType: TextInputType.text,
+                              obscureText: SecureInput_pass,
+                            ),
+                          )),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                                child: Text(
+                              "    TRUE MARK ",
+                              style: TextStyle(color: constants.writingONback),
+                            )),
+                            InkWell(
+                              onTap: () {
+                                Navigator.pushNamed(context, "/ChangePass");
+                              },
+                              child: Container(
+                                  child: Text(
+                                "Forgot password?     ",
+                                style:
+                                    TextStyle(color: constants.writingONback),
+                              )),
+                            ),
+                          ]),
+                    ]),
+              ),
+              Container(
+                height: h / 2.3,
+                padding: EdgeInsets.only(top: 10),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    textfeild(
-                      Onsubmitted: (value) {
-                        // when click on submit btn pass info
-                        _loginEmail = value;
-                        // _PasswordFocusNode.requestFocus();
-                      },
-                      Text2: "Email",
-                      isEMAIL: true,
-                      Onchanged: (value) {
-                        _loginEmail = value;
-                      },
-                      TextInputaction: TextInputAction.next,
+                    Container(
+                      child: custombtn(
+                        WantBig: true,
+                        WantImage: false,
+                        IsGoogle: false,
+                        btnColor: constants.pinkColor,
+                        outlineColor: Colors.black45,
+                        TxtColor: constants.white,
+                        textt: "Log In",
+                        //this text of the button passed to the custombtn function
+                        onPressed: () {
+                          print("Email is :${_loginEmail} ");
+                          print("Pass is :${_LoginPass} ");
+                          setState(
+                            () {
+                              if (_formkey2.currentState.validate() &&
+                                  _formkey3.currentState.validate()) {
+                                SubmitForm();
+
+                                // If the form is valid, display a snackbar. In the real world,
+                                // you'd often call a server or save the information in a database.
+                                // ScaffoldMessenger.of(context).showSnackBar(
+                                // const SnackBar(content: Text('Processing Data')),
+                                // );
+                              } else if (_EmailController.text.isEmpty &&
+                                  _PassController.text.isEmpty) {
+                                _loginEmail = "";
+                                _LoginPass = "";
+                                _alreatDialogBuilder(
+                                    "Email and password Mustn't be Empty",
+                                    "Error");
+                              } else if (!RegExp(emailvalidaition.toString())
+                                  .hasMatch(_PassController.text)) {
+                                _alreatDialogBuilder(
+                                    "Thats not an Email", "Error");
+                              } else if (_EmailController.text.isEmpty) {
+                                _loginEmail = "";
+                                _alreatDialogBuilder(
+                                    "Email must be Above 6 Characters ",
+                                    "Error");
+                              } else if (_PassController.text.isEmpty) {
+                                _LoginPass = "";
+                                _alreatDialogBuilder(
+                                    "password Mustn't be Empty", "Error");
+                              } else if (_PassController.text.length < 6) {
+                                _alreatDialogBuilder(
+                                    "password Must be  Atleast 6 Characters",
+                                    "Error");
+                              }
+                              print(_loginEmail);
+                            },
+                          );
+                        },
+
+                        // outlinebtn: true,Forgot your password? Change password"
+                        IsLoading:
+                            ISloading, // this makes the loading animation
+                        //this colors the button
+                      ),
                     ),
-                    textfeild(
-                      Text2: "Password",
-                      isEMAIL: false,
-                      Onsubmitted: (value) {
-                        // when click on submit btn pass info
-                        SubmitForm();
-                      },
-                      Onchanged: (value) {
-                        _LoginPass = value;
-                      },
-                      // FoucesNode: _PasswordFocusNode,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Container(
+                          width: w / 2.5,
+                          height: h / 500,
+                          color: Colors.white12,
+                        ),
+                        Container(
+                          child: Text(
+                            "OR",
+                            style: TextStyle(
+                                color: constants.writingONback,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w500),
+                          ),
+                        ),
+                        Container(
+                          width: w / 2.5,
+                          height: h / 500,
+                          color: Colors.white12,
+                        ),
+                      ],
                     ),
-                    custombtn(
-                      textt: "Login",
-                      //this text of the button passed to the custombtn function
-                      onPressed: () {
-                        print("Email is :${_loginEmail} ");
-                        print("Pass is :${_LoginPass} ");
-                        setState(() {
-                          SubmitForm();
-                        });
-                      },
-                      outlinebtn: true,
-                      IsLoading: ISloading, // this makes the loading animation
-                      //this colors the button
+                    Container(
+                      child: custombtn(
+                        WantBig: false,
+                        WantImage: true,
+                        IsGoogle: true,
+                        btnColor: constants.white,
+                        outlineColor: Colors.black45,
+                        TxtColor: Colors.black45,
+                        textt: "Continue With Google",
+                        //this text of the button passed to the custombtn function
+                        onPressed: () {},
+
+                        // outlinebtn: true,Forgot your password? Change password"
+                        IsLoading:
+                            ISloading, // this makes the loading animation
+                        //this colors the button
+                      ),
+                    ),
+                    Container(
+                      child: custombtn(
+                        WantBig: false,
+                        WantImage: true,
+                        IsGoogle: false,
+                        btnColor: constants.blueF,
+                        outlineColor: Colors.black45,
+                        TxtColor: constants.white,
+                        textt: "Continue With Facebook",
+                        //this text of the button passed to the custombtn function
+                        onPressed: () {},
+
+                        IsLoading: ISloading,
+                        // this makes the loading animation
+                        //this colors the button
+                      ),
+                    ),
+                    Container(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              Navigator.pushNamed(context, "/register");
+                            },
+                            child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  RichText(
+                                    text: TextSpan(
+                                      children: <TextSpan>[
+                                        TextSpan(
+                                          text: "Don't Have an account?",
+                                          style: TextStyle(
+                                            color: constants.writingONback,
+                                          ),
+                                        ),
+                                        TextSpan(
+                                          text: "Sign Up",
+                                          style: TextStyle(
+                                            color: constants.pinkOnBack,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                ]),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Terms()));
+                            },
+                            child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  RichText(
+                                    text: TextSpan(
+                                      /*
+                                                  By signing up you indicate that you have read and
+agreed to the Patch Terms of Service
+                                                   */
+                                      children: <TextSpan>[
+                                        TextSpan(
+                                          text:
+                                              " By signing up you indicate that you have read and\n agreed to the Patch ",
+                                          style: TextStyle(
+                                            color: constants.writingONback,
+                                            fontSize: 10,
+                                          ),
+                                        ),
+                                        TextSpan(
+                                          text: "Terms of Service",
+                                          style: TextStyle(
+                                            color: constants.pinkOnBack,
+                                            fontSize: 10,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                ]),
+                          ),
+                        ],
+                      ),
                     ),
 
+                    //SizedBox(height: 1,)
                   ],
                 ),
               ),
-              //function Call --------Down----------
-              Padding(
-                padding: EdgeInsets.all(5),
-                child: custombtn(
-                  textt: "Create New Account",
-                  onPressed: () {
-                    Navigator.pushNamed(context, "/register");
-                  },
-                  outlinebtn: false,
-                  IsLoading: false,
-                ),
-              ),
-            ],
+            ]),
           ),
         ),
-      ),
-    );
+      ])),
+    ));
   }
 }
+/*
+   // Container(
+                   //   child: custombtn(
+                   //        textt: "Create New Account",
+                   //        onPressed: () {
+                   //          Navigator.pushNamed(context, "/register");
+                   //        },
+                   //       // outlinebtn: false,
+                   //        IsLoading: false,
+                   //     btnColor: constants.blueF,
+                   //     outlineColor: Colors.black45,
+                   //     TxtColor: constants.white,
+                   //
+                   //      ),
+                   // ),
+                            // textfeild(
+                        //   Onsubmitted: (value) {
+                        //     // when click on submit btn pass info
+                        //     _loginEmail = value;
+                        //      _PasswordFocusNode.requestFocus();
+                        //   },
+                        //   Text2: "Email",
+                        //   isEMAIL: true,
+                        //   Onchanged: (value) {
+                        //     _loginEmail = value;
+                        //   },
+                        //   TextInputaction: TextInputAction.next,
+                        // ),
+                        // textfeild(
+                        //   Text2: "Password",
+                        //   isEMAIL: false,
+                        //   Onsubmitted: (value) {  SubmitForm(); },
+                        //     // when click on submit btn pass info
+                        //
+                        //
+                        //   Onchanged: (value) {_LoginPass = value;  },
+                        //
+                        //
+                        //    FoucesNode: _PasswordFocusNode,
+                        // ),
+
+                              // else if(_loginEmail.isEmpty && _LoginPass.isEmpty){
+                              //   _alreatDialogBuilder("Email and password Mustn't be Empty","Error");
+                              // }else if (_LoginPass.length < 6  ){
+                              //   _alreatDialogBuilder("Password must be Above 6 Characters ","Error");
+                              // }else if (_loginEmail.isEmpty){
+                              //   _alreatDialogBuilder("Email Mustn't be Empty","Error");
+                              // }else if (_LoginPass.isEmpty){
+                              //   _alreatDialogBuilder("password Mustn't be Empty","Error");
+                              // }else if (!RegExp(emailvalidaition).hasMatch(_loginEmail)){
+                              //   _alreatDialogBuilder("Thats not an Email","Error");
+                              // }else {
+                              //   print("user at login screen : $auth");
+                              //   SubmitForm();
+                              // }
+ */

@@ -1,479 +1,660 @@
-import 'package:commerce_app/DataBase/Database.dart';
-import 'package:commerce_app/UI/Cart_Screen/Pages/Cart.dart';
-import 'package:commerce_app/UI/Product_Screen/Pages/Product.dart';
-import 'package:commerce_app/UI/Widgets/AppBar.dart';
-import 'package:commerce_app/UI/Widgets/Buttom_Taps.dart';
-import 'package:commerce_app/UI/Widgets/Cards.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:carousel_pro/carousel_pro.dart';
+import 'package:commerce_app/UI/Constants/constants.dart';
+import 'package:commerce_app/UI/Widgets//Listtitle.dart';
+import 'package:commerce_app/UI/Widgets/musicContain.dart';
 import 'package:flutter/material.dart';
-import 'package:commerce_app/UI/Widgets/Cards.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
-class HomePage extends StatefulWidget {
-//fix the cursaul on homepage
-  @override
-  _HomePageState createState() => _HomePageState();
-}
-
-// child: FlatButton(
-// onPressed: () {
-// FirebaseAuth.instance.signOut();
-// },
-class _HomePageState extends State<HomePage> {
-  var db = new Mysql();
-  var mail = "";
-  int num = 0;
-  bool isAdded = false;
-  bool isFovarite = false;
-
-  // void _getCustomer() {
-  //   db.getConnection().then((conn) {
-  //     String sql = 'select mail from company.customer where id = 10;';
-  //     conn.query(sql).then((results) {
-  //       for(var row in results){
-  //         setState(() {
-  //           mail = row[0];
-  //         });
-  //       }
-  //     });
-  //     conn.close();
-  //   });
-  // }
-
-  @override
-  Widget build(BuildContext context) {
-    var height = MediaQuery.of(context).size.height / 3.6;
-    var width = MediaQuery.of(context).size.width / 1;
-    return SafeArea(
-      child: Scaffold(
-        appBar: Appbar_Tool(
-          text2: "Home",
-          WantSearch: true,
-        ),
-        body: SingleChildScrollView(
-          child: Column(
-              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                SizedBox(
-                  height: 7,
-                ),
-                SizedBox(
-                  child: Carousel(
-                    dotIncreasedColor: Colors.amberAccent,
-                    boxFit: BoxFit.cover,
-                    dotColor: Colors.black,
-                    dotSpacing: 10,
-                    dotSize: 6,
-                    indicatorBgPadding: 0,
-                    dotPosition: DotPosition.bottomRight,
-                    dotVerticalPadding: 10,
-                    dotHorizontalPadding: 55,
-                    dotBgColor: Colors.transparent,
-                    images: [
-                      Image.asset("Assets/Images/logo11.png"),
-                      Image.asset("Assets/Images/logo4.png"),
-                      Image.asset("Assets/Images/logo12.png"),
-                    ],
-                  ),
-                  width: width,
-                  height: height,
-                ),
-                Container(
-                  color: Colors.transparent,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Text(
-                        "  New Products",
-                        style: TextStyle(fontSize: 18),
-                      ),
-                      Text("                                  "),
-                      FlatButton.icon(
-                        onPressed: () {
-                          print(mail);
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => Product()),
-                          );
-                        },
-                        label: Image.asset(
-                          "Assets/Images/trans.png",
-                          height: 20,
-                          width: 20,
-                        ),
-                        icon: Text(
-                          "See More",
-                          style: TextStyle(fontSize: 18),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height / 2.5,
-                  child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      // physics: NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: 6,
-                      itemBuilder: (context, index) {
-                        return Card1[index];
-                      }),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Text(
-                      "  Best Products",
-                      style: TextStyle(fontSize: 18),
-                    ),
-                    Text("                                  "),
-                    FlatButton.icon(
-                      //this could be a container
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => Product()),
-                        );
-                      },
-                      label: Image.asset(
-                        "Assets/Images/trans.png",
-                        height: 20,
-                        width: 20,
-                      ),
-                      icon: Text(
-                        " See More",
-                        style: TextStyle(fontSize: 18),
-                      ),
-                    )
-                  ],
-                ),
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height / 2.5,
-                  child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      // physics: NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: 6,
-                      itemBuilder: (context, index) {
-                        return Card2[index];
-                      }),
-                ),
-              ]),
-        ),
-      ),
-    );
-  }
-
-  List<Widget> Card1 = <Widget>[
-    _buildCard(
-      'Cookie612 cream',
-      '\$5.99',
-      'Assets/Images/logo1.png',
+class Homepage extends StatefulWidget {
+  List<Widget> listtiles = <Widget>[
+    ListTilee(
+      imagePath: "Assets/Images/Image-16.png",
+      text2: "Expeditiously with tip 'T.I.' Harris",
+      text: "Greenwood Online Banking For Us By Us",
+      onPressed: () {},
     ),
-    _buildCard(
-      'Cookie591 lol',
-      '\$7.99',
-      'Assets/Images/logo4.png',
+    ListTilee(
+      imagePath: "Assets/Images/Image-16.png",
+      text2: "Expeditiously with tip 'T.I.' Harris",
+      text: "Greenwood Online Banking For Us By Us",
+      onPressed: () {},
     ),
-    _buildCard(
-      'Cookie482 ez4',
-      '\$6.99',
-      'Assets/Images/logo12.png',
+    ListTilee(
+      imagePath: "Assets/Images/Image-16.png",
+      text2: "Expeditiously with tip 'T.I.' Harris",
+      text: "Greenwood Online Banking For Us By Us",
+      onPressed: () {},
     ),
-    _buildCard(
-      'Cookie383 xd1',
-      '\$5.99',
-      'Assets/Images/logo11.png',
+    ListTilee(
+      imagePath: "Assets/Images/saedlol2.png",
+      text2: "Expeditiously with tip 'T.I.' Harris",
+      text: "Greenwood Online Banking For Us By Us",
+      onPressed: () {},
     ),
-    _buildCard(
-      'Cookie284 as2',
-      '\$4.99',
-      'Assets/Images/logo3.png',
+    ListTilee(
+      imagePath: "Assets/Images/saedlol1 (1).png",
+      text2: "Expeditiously with tip 'T.I.' Harris",
+      text: "Greenwood Online Banking For Us By Us",
+      onPressed: () {},
     ),
-    _buildCard(
-      'Cookie175 sa3',
-      '\$3.99',
-      'Assets/Images/logo2.jpg',
+    ListTilee(
+      imagePath: "Assets/Images/saedlol3 (2).png",
+      text2: "Expeditiously with tip 'T.I.' Harris",
+      text: "Greenwood Online Banking For Us By Us",
+      onPressed: () {},
+    ),
+    ListTilee(
+      imagePath: "Assets/Images/Image-16.png",
+      text2: "Expeditiously with tip 'T.I.' Harris",
+      text: "Greenwood Online Banking For Us By Us",
+      onPressed: () {},
+    ),
+    ListTilee(
+      imagePath: "Assets/Images/Image-16.png",
+      text2: "Expeditiously with tip 'T.I.' Harris",
+      text: "Greenwood Online Banking For Us By Us",
+      onPressed: () {},
+    ),
+    ListTilee(
+      imagePath: "Assets/Images/Image-16.png",
+      text2: "Expeditiously with tip 'T.I.' Harris",
+      text: "Greenwood Online Banking For Us By Us",
+      onPressed: () {},
+    ),
+    ListTilee(
+      imagePath: "Assets/Images/Image-16.png",
+      text2: "Expeditiously with tip 'T.I.' Harris",
+      text: "Greenwood Online Banking For Us By Us",
+      onPressed: () {},
+    ),
+    ListTilee(
+      imagePath: "Assets/Images/Image-16.png",
+      text2: "Expeditiously with tip 'T.I.' Harris",
+      text: "Greenwood Online Banking For Us By Us",
+      onPressed: () {},
+    ),
+    ListTilee(
+      imagePath: "Assets/Images/Image-16.png",
+      text2: "Expeditiously with tip 'T.I.' Harris",
+      text: "Greenwood Online Banking For Us By Us",
+      onPressed: () {},
+    ),
+    ListTilee(
+      imagePath: "Assets/Images/Image-16.png",
+      text2: "Expeditiously with tip 'T.I.' Harris",
+      text: "Greenwood Online Banking For Us By Us",
+      onPressed: () {},
+    ),
+    ListTilee(
+      imagePath: "Assets/Images/Image-16.png",
+      text2: "Expeditiously with tip 'T.I.' Harris",
+      text: "Greenwood Online Banking For Us By Us",
+      onPressed: () {},
+    ),
+    ListTilee(
+      imagePath: "Assets/Images/Image-16.png",
+      text2: "Expeditiously with tip 'T.I.' Harris",
+      text: "Greenwood Online Banking For Us By Us",
+      onPressed: () {},
+    ),
+    ListTilee(
+      imagePath: "Assets/Images/Image-16.png",
+      text2: "Expeditiously with tip 'T.I.' Harris",
+      text: "Greenwood Online Banking For Us By Us",
+      onPressed: () {},
+    ),
+    ListTilee(
+      imagePath: "Assets/Images/Image-16.png",
+      text2: "Expeditiously with tip 'T.I.' Harris",
+      text: "Greenwood Online Banking For Us By Us",
+      onPressed: () {},
+    ),
+    ListTilee(
+      imagePath: "Assets/Images/Image-16.png",
+      text2: "Expeditiously with tip 'T.I.' Harris",
+      text: "Greenwood Online Banking For Us By Us",
+      onPressed: () {},
+    ),
+    ListTilee(
+      imagePath: "Assets/Images/Image-16.png",
+      text2: "Expeditiously with tip 'T.I.' Harris",
+      text: "Greenwood Online Banking For Us By Us",
+      onPressed: () {},
+    ),
+    ListTilee(
+      imagePath: "Assets/Images/Image-16.png",
+      text2: "Expeditiously with tip 'T.I.' Harris",
+      text: "Greenwood Online Banking For Us By Us",
+      onPressed: () {},
     ),
   ];
+  List<Widget> Card2 = <Widget>[
+    MusicContain(
+      WantText: true,
+      text: "THE JORDAN HARBING..",
+      text2: "Celeste Headlee",
+      imagePath: "Assets/Images/Image-16.png",
+      onPressed: () {
+        print("lol");
+      },
+    ),
+    MusicContain(
+      WantText: true,
+      text: "FROM NEGATIVE TO PO...",
+      text2: "The King of Miami",
+      imagePath: "Assets/Images/Image-10.png",
+      onPressed: () {
+        print("lol");
+      },
+    ),
+    MusicContain(
+      WantText: true,
+      text: "I SURVIVED",
+      text2: "Cold Case Files: Modus Operandi",
+      imagePath: "Assets/Images/Image-11.png",
+      onPressed: () {
+        print("lol");
+      },
+    ),
+    MusicContain(
+      WantText: true,
+      text: "THE JORDAN HARBING..",
+      text2: "THE JORDAN HARBING..",
+      imagePath: "Assets/Images/Image-12.png",
+      onPressed: () {
+        print("lol");
+      },
+    ),
+    MusicContain(
+      WantText: true,
+      text: "THE JORDAN HARBING..",
+      text2: "THE JORDAN HARBING..",
+      imagePath: "Assets/Images/Image-13.png",
+      onPressed: () {
+        print("lol");
+      },
+    ),
+    MusicContain(
+      WantText: true,
+      text: "THE JORDAN HARBING..",
+      text2: "THE JORDAN HARBING..",
+      imagePath: "Assets/Images/Image-14.png",
+      onPressed: () {
+        print("lol");
+      },
+    ),
+    MusicContain(
+      WantText: true,
+      text: "THE JORDAN HARBING..",
+      text2: "THE JORDAN HARBING..",
+      imagePath: "Assets/Images/Card-small-1.png",
+      onPressed: () {
+        print("lol");
+      },
+    ),
+  ];
+  List<Widget> Card3 = <Widget>[
+    MusicContain(
+      WantText: false,
+      text: "THE JORDAN HARBING..",
+      text2: "Celeste Headlee",
+      imagePath: "Assets/Images/Image-16.png",
+      onPressed: () {
+        print("lol");
+      },
+    ),
+    MusicContain(
+      WantText: false,
+      text: "FROM NEGATIVE TO PO...",
+      text2: "The King of Miami",
+      imagePath: "Assets/Images/Image-10.png",
+      onPressed: () {
+        print("lol");
+      },
+    ),
+    MusicContain(
+      WantText: false,
+      text: "I SURVIVED",
+      text2: "Cold Case Files: Modus Operandi",
+      imagePath: "Assets/Images/Image-11.png",
+      onPressed: () {
+        print("lol");
+      },
+    ),
+    MusicContain(
+      WantText: false,
+      text: "THE JORDAN HARBING..",
+      text2: "THE JORDAN HARBING..",
+      imagePath: "Assets/Images/Image-12.png",
+      onPressed: () {
+        print("lol");
+      },
+    ),
+    MusicContain(
+      WantText: false,
+      text: "THE JORDAN HARBING..",
+      text2: "THE JORDAN HARBING..",
+      imagePath: "Assets/Images/Image-13.png",
+      onPressed: () {
+        print("lol");
+      },
+    ),
+    MusicContain(
+      WantText: false,
+      text: "THE JORDAN HARBING..",
+      text2: "THE JORDAN HARBING..",
+      imagePath: "Assets/Images/Image-14.png",
+      onPressed: () {
+        print("lol");
+      },
+    ),
+    MusicContain(
+      WantText: false,
+      text: "THE JORDAN HARBING..",
+      text2: "THE JORDAN HARBING..",
+      imagePath: "Assets/Images/Card-small-1.png",
+      onPressed: () {
+        print("lol");
+      },
+    ),
+  ];
+
+  @override
+  _HomepageState createState() => _HomepageState();
 }
 
-List<Widget> Card2 = <Widget>[
-  _buildCard(
-    'Cookie60 cream',
-    '\$5.99',
-    'Assets/Images/logo1.png',
-  ),
-  _buildCard(
-    'Cookie55 lol',
-    '\$7.99',
-    'Assets/Images/logo4.png',
-  ),
-  _buildCard(
-    'Cookie40 ez4',
-    '\$6.99',
-    'Assets/Images/logo12.png',
-  ),
-  _buildCard(
-    'Cookie30 xd1',
-    '\$5.99',
-    'Assets/Images/logo11.png',
-  ),
-  _buildCard(
-    'Cookie20 as2',
-    '\$4.99',
-    'Assets/Images/logo3.png',
-  ),
-  _buildCard(
-    'Cookie10 sa3',
-    '\$3.99',
-    'Assets/Images/logo2.jpg',
-  ),
-];
+class _HomepageState extends State<Homepage> {
+  @override
+  Widget build(BuildContext context) {
+    var h = MediaQuery.of(context).size.height;
+    var w = MediaQuery.of(context).size.width;
+    return Scaffold(
+      body: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            backgroundColor: constants.blackBack,
+            automaticallyImplyLeading: false,
+            pinned: false,
+            floating: false,
+            // snap: false,
+            title: Text(""),
+            expandedHeight: 420,
 
-Widget _buildCard(
-  String name,
-  String price,
-  String imgPath,
+            flexibleSpace: FlexibleSpaceBar(
+              title: Container(
+                // color: Colors.pink,
+                child: Stack(children: [
+                  Container(
+                    width: w,
+                    height: h,
+                    color: constants.blackBack,
+                  ),
+                  Container(
+                    child: new RotationTransition(
+                      turns: new AlwaysStoppedAnimation(-90 / 360),
+                      child: Container(
+                        width: w,
+                        height: h,
+                        padding: EdgeInsets.symmetric(vertical: 0),
+                        child: Carousel(
+                          // autoplayDuration:  Duration(seconds: 10),
 
-) {
-  bool added = false;
-  return Padding(
-      padding: EdgeInsets.only(top: 5.0, bottom: 5.0, left: 5.0, right: 5.0),
-      child: InkWell(
-          onTap: () {
-            // Navigator.of(context).push(
-            //     MaterialPageRoute(builder: (context) => CookieDetail(
-            //         assetPath: imgPath,
-            //         cookieprice:price,
-            //         cookiename: name
-            //     )));
-          },
-          child: Container(
-              width: 180,
-              height: 250,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15.0),
-                  boxShadow: [
-                    BoxShadow(
-                        color: Colors.grey.withOpacity(0.2),
-                        spreadRadius: 3.0,
-                        blurRadius: 5.0),
-                  ],
-                  color: Colors.white),
-              child: Column(children: [
-                Padding(
-                  padding: EdgeInsets.all(5.0),
-                  child:
-                      Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-                    !false
-                        ? IconButton(
-                            onPressed: () {
+                          dotIncreasedColor: Colors.white,
+                          dotIncreaseSize: 1.5,
+                          boxFit: BoxFit.cover,
+                          dotColor: Colors.black,
 
-                            },
-                            icon:
-                                Icon(Icons.favorite, color: Color(0xFFEF7532)))
-                        : IconButton(
-                            onPressed: () {},
-                            icon: Icon(Icons.favorite_border,
-                                color: Color(0xFFEF7532)),
-                          )
-                  ]),
-                ),
-                Hero(
-                    tag: name,
-                    child: Container(
-                        height: 75.0,
-                        width: 75.0,
-                        decoration: BoxDecoration(
-                            image: DecorationImage(
-                                image: AssetImage(imgPath),
-                                fit: BoxFit.contain)))),
-                SizedBox(height: 30.0),
-                Text(price,
-                    style: TextStyle(
-                        color: Color(0xFFCC8053),
-                        fontFamily: 'Varela',
-                        fontSize: 20.0)),
-                SizedBox(height: 7.0),
-                Text(name,
-                    style: TextStyle(
-                        color: Color(0xFF575E67),
-                        fontFamily: 'Varela',
-                        fontSize: 20.0)),
-                SizedBox(height: 30.0),
-                Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Container(color: Color(0xFFEBEBEB), height: 1.0)),
-                Padding(
-                    padding: EdgeInsets.only(left: 5.0, right: 5.0),
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          if (!added) ...[
-                            Icon(Icons.shopping_basket,
-                                color: Color(0xFFD17E50), size: 12.0),
-                            Text('Add to cart',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: 'Varela',
-                                    color: Color(0xFFD17E50),
-                                    fontSize: 20.0))
+                          dotSpacing: 7,
+                          dotSize: 4,
+                          indicatorBgPadding: 0,
+                          dotPosition: DotPosition.bottomRight,
+                          dotVerticalPadding: 320,
+                          dotHorizontalPadding: 130,
+                          dotBgColor: Colors.transparent,
+                          images: [
+                            Image.asset(
+                              "Assets/Images/MovingImage2.png",
+                              // height: h,
+                              // width: w,
+                              fit: BoxFit.contain,
+                            ),
+                            Image.asset(
+                              "Assets/Images/MovingImage2.png",
+                              //height: 150,
+                              //width: ,
+                              fit: BoxFit.contain,
+                            ),
+                            Image.asset(
+                              "Assets/Images/MovingImage2.png",
+                              //height: 150,
+                              //width: ,
+                              fit: BoxFit.contain,
+                            ),
+                            Image.asset(
+                              "Assets/Images/MovingImage2.png",
+                              //height: 150,
+                              //width: ,
+                              fit: BoxFit.contain,
+                            ),
                           ],
-                          if (added) ...[
-                            IconButton(
-                              onPressed: () {},
-                              icon: Icon(Icons.remove_circle_outline,
-                                  color: Color(0xFFD17E50), size: 12.0),
-                            ),
-                            Text('3',
-                                style: TextStyle(
-                                    fontFamily: 'Varela',
-                                    color: Color(0xFFD17E50),
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20.0)),
-                            IconButton(
-                              onPressed: () {},
-                              icon: Icon(Icons.add_circle_outline,
-                                  color: Color(0xFFD17E50), size: 12.0),
-                            ),
-                          ]
-                        ]))
-              ]))));
-}
+                        ),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    child: Positioned(
+                      top: w / 2.3,
+                      right: w / 100,
+                      child: IconButton(
+                        icon: Icon(
+                          Icons.search,
+                          size: 25,
+                          color: Colors.white,
+                        ),
+                        onPressed: () {
+                          Navigator.pushNamed(context, "/Search");
+                        },
+                      ),
+                    ),
+                  ),
+                  Container(
+                    child: Positioned(
+                        top: h / 3.7,
+                        right: w / 2.7,
+                        child: Container(
+                            child: Text(
+                          "Tabitha Nauser",
+                          style: TextStyle(
+                              color: constants.writingONback, fontSize: 9.6),
+                        ))),
+                  ),
+                  Container(
+                    child: Positioned(
+                        top: h / 3.3,
+                        right: w / 2.97,
+                        child: Container(
+                            child: Text(
+                          "Bulletproof",
+                          style: TextStyle(
+                              color: constants.white,
+                              fontSize: 15,
+                              fontWeight: FontWeight.w700),
+                        ))),
+                  ),
+                  Container(
+                    child: Positioned(
+                        top: h / 2.7,
+                        right: w / 2.5,
+                        child: Container(
+                            child: Text(
+                          "Popular Broadcast",
+                          style: TextStyle(
+                              color: constants.white,
+                              fontSize: 11,
+                              fontWeight: FontWeight.w700),
+                        ))),
+                  ),
+                  Container(
+                    child: Positioned(
+                      top: h / 2.6,
+                      child: Container(
+                        // color: Colors.green,
 
+                        height: h * 20,
+                        child: ListView.builder(
+                            // separatorBuilder: (BuildContext context, int index) =>
+                            //     SizedBox(
+                            //       width: 5,
+                            //     ),
+                            scrollDirection: Axis.horizontal,
+                            // physics: NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: 7,
+                            itemBuilder: (context, index) {
+                              return widget.Card2[index];
+                            }),
+                      ),
+                    ),
+                  ),
+                ]),
+              ),
+              centerTitle: true,
+            ),
+          ),
+          SliverList(
+              delegate: SliverChildListDelegate(
+            [
+              Column(
+                children: [
+                  Stack(
+                    children: [
+                      Container(
+                        width: w,
+                        height: h * 20,
+                        color: constants.blackBack,
+                      ),
+                      Container(
+                        child: Positioned(
+                          left: w / 20,
+                          top: 0,
+                          child: Text(
+                            "Similar Broadcast",
+                            style: TextStyle(
+                                color: constants.white,
+                                fontSize: 15,
+                                fontWeight: FontWeight.w700),
+                          ),
+                        ),
+                      ),
+                      Container(
+                        child: Positioned(
+                          top: w / 20,
+                          child: Container(
+                            padding: EdgeInsets.only(
+                              right: w / 50,
+                              left: w / 50,
+                            ),
+                            //  color: Colors.green,
+                            width: w,
+                            height: h,
+                            child: ListView.separated(
+                                separatorBuilder:
+                                    (BuildContext context, int index) =>
+                                        SizedBox(
+                                          height: 5,
+                                        ),
+                                scrollDirection: Axis.vertical,
+                                physics: NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                itemCount: 20,
+                                itemBuilder: (context, index) {
+                                  return widget.listtiles[index];
+                                }),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ],
+          )),
+        ],
+      ),
+
+      // Stack(children: [
+      //   Container(
+      //     width: w,
+      //     height: h,
+      //     color: constants.blackBack,
+      //   ),
+      //   Container(
+      //     child: new RotationTransition(
+      //       turns: new AlwaysStoppedAnimation(-90 / 360),
+      //       child: Container(
+      //         width: w,
+      //         height: h / 1.9,
+      //         child: Carousel(
+      //           // autoplayDuration:  Duration(seconds: 10),
+      //
+      //           dotIncreasedColor: Colors.white,
+      //           boxFit: BoxFit.cover,
+      //           dotColor: Colors.black,
+      //
+      //           dotSpacing: 10,
+      //           dotSize: 6,
+      //           indicatorBgPadding: 0,
+      //           dotPosition: DotPosition.bottomRight,
+      //           dotVerticalPadding: 355,
+      //           dotHorizontalPadding: 120,
+      //           dotBgColor: Colors.transparent,
+      //           images: [
+      //             Image.asset(
+      //               "Assets/Images/MovingImage2.png",
+      //               // height: h,
+      //               // width: w,
+      //               fit: BoxFit.contain,
+      //             ),
+      //             Image.asset(
+      //               "Assets/Images/MovingImage2.png",
+      //               //height: 150,
+      //               //width: ,
+      //               fit: BoxFit.contain,
+      //             ),
+      //             Image.asset(
+      //               "Assets/Images/MovingImage2.png",
+      //               //height: 150,
+      //               //width: ,
+      //               fit: BoxFit.contain,
+      //             ),
+      //             Image.asset(
+      //               "Assets/Images/MovingImage2.png",
+      //               //height: 150,
+      //               //width: ,
+      //               fit: BoxFit.contain,
+      //             ),
+      //           ],
+      //         ),
+      //       ),
+      //     ),
+      //   ),
+      //   Positioned(
+      //     top: h / 22,
+      //     right: w / 20,
+      //     child: IconButton(
+      //       icon: Icon(
+      //         Icons.search,
+      //         size: 30,
+      //         color: constants.writingONback,
+      //       ),
+      //       onPressed: () {
+      //         Navigator.pushNamed(context, "/Search");
+      //       },
+      //     ),
+      //   ),
+      //   Positioned(
+      //       top: h / 6.9,
+      //       right: w / 2,
+      //       child: Container(
+      //           child: Text(
+      //         "Tabitha Nauser",
+      //         style: TextStyle(color: constants.writingONback),
+      //       ))),
+      //   Positioned(
+      //       top: h / 5.5,
+      //       right: w / 2.19,
+      //       child: Container(
+      //           child: Text(
+      //         "Bulletproof",
+      //         style: TextStyle(
+      //             color: constants.white,
+      //             fontSize: 22,
+      //             fontWeight: FontWeight.w700),
+      //       ))),
+      //   Positioned(
+      //       top: h / 2.8,
+      //       right: w / 1.55,
+      //       child: Container(
+      //           child: Text(
+      //         "Popular Broadcast",
+      //         style: TextStyle(
+      //             color: constants.white,
+      //             fontSize: 14,
+      //             fontWeight: FontWeight.w700),
+      //       ))),
+      //   Positioned(
+      //     top: h / 2.5,
+      //     left: w / 38,
+      //     child: Container(
+      //       //  color: Colors.green,
+      //       width: w,
+      //       height: h / 4.1,
+      //       child: ListView.builder(
+      //           // separatorBuilder: (BuildContext context, int index) =>
+      //           //     SizedBox(
+      //           //       width: 5,
+      //           //     ),
+      //           scrollDirection: Axis.horizontal,
+      //           // physics: NeverScrollableScrollPhysics(),
+      //           shrinkWrap: true,
+      //           itemCount: 7,
+      //           itemBuilder: (context, index) {
+      //             return widget.Card2[index];
+      //           }),
+      //     ),
+      //   ),
+      //   Positioned(
+      //       top: h / 1.5,
+      //       right: w / 1.55,
+      //       child: Container(
+      //           child: Text(
+      //         "Similar Broadcast",
+      //         style: TextStyle(
+      //             color: constants.white,
+      //             fontSize: 14,
+      //             fontWeight: FontWeight.w700),
+      //       ))),
+      //   Positioned(
+      //     top: h / 1.5,
+      //     left: w / 40,
+      //     child:
+      //         //0B0B15
+      //
+      //         Container(
+      //       padding: EdgeInsets.only(
+      //         right: w / 17,
+      //       ),
+      //       //  color: Colors.green,
+      //       width: w,
+      //       height: h / 4.1,
+      //       child: ListView.separated(
+      //           separatorBuilder: (BuildContext context, int index) => SizedBox(
+      //                 height: 5,
+      //               ),
+      //           scrollDirection: Axis.vertical,
+      //           // physics: NeverScrollableScrollPhysics(),
+      //           shrinkWrap: true,
+      //           itemCount: 8,
+      //           itemBuilder: (context, index) {
+      //             return widget.listtiles[index];
+      //           }),
+      //     ),
+      //   ),
+      // ]),
+    );
+  }
+}
 //
-// class Cards extends StatefulWidget {
-//   double price;
-//   String name;
-//
-//   Cards({this.name, this.price});
-//
-//   @override
-//   _CardsState createState() => _CardsState();
-// }
-//
-// class _CardsState extends State<Cards> {
-//   bool selected = false;
-//   bool selected2 = false;
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Column(children: [
-//       Container(
-//         decoration: BoxDecoration(
-//           color: Colors.black12,
-//           borderRadius: BorderRadius.only(
-//             topLeft: Radius.circular(20),
-//             topRight: Radius.circular(20),
-//             bottomRight: Radius.circular(20),
-//             bottomLeft: Radius.circular(20),
-//           ),
-//         ),
-//         width: 185,
-//         height: 250,
-//         child: Stack(children: [
-//           Positioned(
-//             top: 10,
-//             right: 5,
-//             child: IconButton(
-//               icon: Icon(Icons.favorite),
-//               onPressed: () {
-//                 print("lol");
-//                 setState(() {
-//                   selected = !selected;
-//                 });
-//               },
-//               color: selected ? Colors.red[900] : Colors.white,
-//             ),
-//           ),
-//           Column(
-//             children: [
+
+//            ),
 //               Container(
-//                 child: Image.asset(
-//                     "Assets/Images/watch-png-hd-download-png-image-watch-png-hd-1.png"),
-//                 width: 100,
-//                 height: 111,
+//               decoration: BoxDecoration(
+//               image: DecorationImage(
+//               fit: BoxFit. fill,
+//               image: NetworkImage("https://picsum.photos/250? image=9"),
+//               )
+//
 //               ),
-//               Container(
-//                 decoration: BoxDecoration(
-//                   color: Colors.white,
-//                   borderRadius: BorderRadius.only(
-//                     bottomRight: Radius.circular(20),
-//                     bottomLeft: Radius.circular(20),
-//                   ),
-//                 ),
-//                 width: 200,
-//                 height: 139,
-//                 child: Column(
-//                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-//                   children: [
-//                     Text("${widget.name}"),
-//                     Text("\$ ${widget.price.toString()}"),
-//                     Container(
-//                       width: 135,
-//                       height: 30,
-//                       child: RaisedButton(
-//                         child: Text(
-//                           selected2 ? "Remove From Cart" : "Add to Cart",
-//                           style: TextStyle(fontSize: 10.9),
-//                         ),
-//                         onPressed: () {
-//                           setState(() {
-//                             selected2 = !selected2;
-//                           });
-//                         },
-//                         color: Colors.green,
-//                       ),
-//                     ),
-//                   ],
-//                 ),
-//               ),
-//             ],
-//           ),
-//         ]),
-//       ),
-//     ]);
 //
-//     /*
-//         color: Colors.blue,
-//         height: 250,
-//         width: 150,
-//         decoration: BoxDecoration(
-//         color: Colors.amber,
-//         borderRadius: BorderRadius.only(
-//         topLeft: Radius.circular(30),
-//     topRight: Radius.circular(30),
-//     bottomRight: Radius.circular(30),
-//     bottomLeft: Radius.circular(30),
-//     ),
-//     child :  Column(
-//
-//     children : [
-//     Container(
-//
-//     boxShadow: [
-//     BoxShadow(offset: Offset(0, 10), blurRadius: 10, color: Colors.blue),
-//     ],
-//     image: DecorationImage(
-//     image: AssetImage("Assets/Images/watch-png-hd-download-png-image-watch-png-hd-1.png"),
 //
 //     ),
-//     )
-//     ,
-//     ]
-//     )
-//     ,
-//     );
-//   }
-// }
-//
-//          */
-//   }
-// }

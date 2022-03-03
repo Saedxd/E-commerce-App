@@ -13,12 +13,18 @@ dependencies:
   flutter:
     sdk: flutter
 
-# bottom motion bar
-  motion_tab_bar: ^0.1.5
+## bottom motion bar
+#  motion_tab_bar: ^0.1.5
   #....
+  #Flutter switch
+  flutter_switch: ^0.3.2
+  #lol
   cupertino_icons: ^1.0.2
   #image picker
   image_picker: ^0.8.4+1
+  #SVG PHOTOS
+
+  flutter_svg: ^0.19.3
   # firebase dependencies
   firebase_core: ^1.12.0
   firebase_auth: ^3.3.6
@@ -31,6 +37,9 @@ dependencies:
   carousel_pro: ^1.0.0
   #Connect Database
   mysql1: ^0.19.2
+  #bottom bar
+  sliding_clipped_nav_bar: ^3.0.0+0
+  convex_bottom_bar: ^3.0.0
   #Firebase messagges
   firebase_messaging: ^11.2.6
   flutter_local_notifications: ^5.0.0+1

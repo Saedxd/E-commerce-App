@@ -1,0 +1,11 @@
+<svg id="Group_11604" data-name="Group 11604" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="375" height="812" viewBox="0 0 375 812">
+  <defs>
+    <radialGradient id="radial-gradient" cx="0.5" cy="0.5" r="1.234" gradientTransform="translate(0 0.266) scale(1 0.468)" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#2d2c3c"/>
+      <stop offset="1" stop-color="#191925"/>
+    </radialGradient>
+  </defs>
+  <g id="Background">
+    <rect id="Background-2" data-name="Background" width="375" height="812" fill="url(#radial-gradient)"/>
+  </g>
+</svg>

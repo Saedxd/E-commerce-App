@@ -12,7 +12,7 @@ class _FavoriteState extends State<Favorite> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: Appbar_Tool(text2: "Favorite",WantSearch: true,),
+      appBar: Custom_Appbar(text2: "Favorite",WantSearch: true,WantCart: true,),
     );
   }
 }

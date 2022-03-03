@@ -1,30 +1,42 @@
 import 'package:commerce_app/UI/Cart_Screen/Pages/Cart.dart';
 import 'package:flutter/material.dart';
-class Appbar_Tool extends StatelessWidget implements PreferredSizeWidget {
+class Custom_Appbar extends StatelessWidget implements PreferredSizeWidget {
    String text2;// for App bar Title.
    bool WantSearch;// if you wanted search Icon Button. Constructor Does the work.
+   final WantCart;
+
+   Custom_Appbar({this.text2,this.WantSearch,this.WantCart});
 
 
-  Appbar_Tool({this.text2,this.WantSearch});
-
-
-
+//url lancher.
   @override
   Widget build(BuildContext context) {
     return AppBar(
+       // automaticallyImplyLeading: false,
 
       title: Text(text2),
       centerTitle: true,
       backgroundColor: Colors.pink[900],
+
       actions: [
-        IconButton(
+
+        WantCart
+            ? IconButton(
+
             onPressed: () {
               Navigator.push(context,
                 MaterialPageRoute(builder: (context) => Cart() ),
               );
             },
 
-          icon: Icon(Icons.shopping_cart_rounded)) ],
+            icon:
+            Icon(Icons.shopping_cart_rounded)
+
+
+        )
+            :Text(" ")
+
+      ],
 
       leading: WantSearch ? IconButton(onPressed: (){},  icon: Icon(Icons.search)) : null
     );
