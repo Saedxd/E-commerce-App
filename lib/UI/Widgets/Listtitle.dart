@@ -6,7 +6,8 @@ class ListTilee extends StatefulWidget {
   Function onPressed;
   String text;
   String text2;
-  ListTilee({this.onPressed,this.imagePath,this.text,this.text2});
+  Color TILECOLOR;
+  ListTilee({this.onPressed,this.imagePath,this.text,this.text2,this.TILECOLOR});
 
   @override
   _ListTileeState createState() => _ListTileeState();
@@ -19,9 +20,7 @@ class _ListTileeState extends State<ListTilee> {
       onTap: widget.onPressed,
       child: Container(
         decoration: BoxDecoration(
-          color:constants.Cardcolor,
-          //  color: Colors.green,
-
+          color: widget.TILECOLOR,
           borderRadius: BorderRadius.only(
             bottomLeft: Radius.circular(15),
             bottomRight: Radius.circular(15),

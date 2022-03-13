@@ -2,131 +2,74 @@ import 'package:carousel_pro/carousel_pro.dart';
 import 'package:commerce_app/UI/Constants/constants.dart';
 import 'package:commerce_app/UI/Widgets//Listtitle.dart';
 import 'package:commerce_app/UI/Widgets/musicContain.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class Homepage extends StatefulWidget {
+
   List<Widget> listtiles = <Widget>[
+
     ListTilee(
+      TILECOLOR: constants.Cardcolor,
+      imagePath: "Assets/Images/Image-16.png",
+      text2: "Expeditiously with tip 'T.I.' Harris",
+      text: "Greenwood Online Banking For Us By Us",
+      onPressed: () {
+
+
+        },
+    ),
+    ListTilee(
+      TILECOLOR: constants.Cardcolor,
       imagePath: "Assets/Images/Image-16.png",
       text2: "Expeditiously with tip 'T.I.' Harris",
       text: "Greenwood Online Banking For Us By Us",
       onPressed: () {},
     ),
     ListTilee(
-      imagePath: "Assets/Images/Image-16.png",
-      text2: "Expeditiously with tip 'T.I.' Harris",
-      text: "Greenwood Online Banking For Us By Us",
-      onPressed: () {},
-    ),
-    ListTilee(
-      imagePath: "Assets/Images/Image-16.png",
-      text2: "Expeditiously with tip 'T.I.' Harris",
-      text: "Greenwood Online Banking For Us By Us",
-      onPressed: () {},
-    ),
-    ListTilee(
+      TILECOLOR: constants.Cardcolor,
       imagePath: "Assets/Images/saedlol2.png",
       text2: "Expeditiously with tip 'T.I.' Harris",
       text: "Greenwood Online Banking For Us By Us",
       onPressed: () {},
     ),
     ListTilee(
+      TILECOLOR: constants.Cardcolor,
       imagePath: "Assets/Images/saedlol1 (1).png",
       text2: "Expeditiously with tip 'T.I.' Harris",
       text: "Greenwood Online Banking For Us By Us",
       onPressed: () {},
     ),
     ListTilee(
+      TILECOLOR: constants.Cardcolor,
       imagePath: "Assets/Images/saedlol3 (2).png",
       text2: "Expeditiously with tip 'T.I.' Harris",
       text: "Greenwood Online Banking For Us By Us",
       onPressed: () {},
     ),
     ListTilee(
+      TILECOLOR: constants.Cardcolor,
       imagePath: "Assets/Images/Image-16.png",
       text2: "Expeditiously with tip 'T.I.' Harris",
       text: "Greenwood Online Banking For Us By Us",
       onPressed: () {},
     ),
     ListTilee(
+      TILECOLOR: constants.Cardcolor,
       imagePath: "Assets/Images/Image-16.png",
       text2: "Expeditiously with tip 'T.I.' Harris",
       text: "Greenwood Online Banking For Us By Us",
       onPressed: () {},
     ),
     ListTilee(
+      TILECOLOR: constants.Cardcolor,
       imagePath: "Assets/Images/Image-16.png",
       text2: "Expeditiously with tip 'T.I.' Harris",
       text: "Greenwood Online Banking For Us By Us",
       onPressed: () {},
     ),
-    ListTilee(
-      imagePath: "Assets/Images/Image-16.png",
-      text2: "Expeditiously with tip 'T.I.' Harris",
-      text: "Greenwood Online Banking For Us By Us",
-      onPressed: () {},
-    ),
-    ListTilee(
-      imagePath: "Assets/Images/Image-16.png",
-      text2: "Expeditiously with tip 'T.I.' Harris",
-      text: "Greenwood Online Banking For Us By Us",
-      onPressed: () {},
-    ),
-    ListTilee(
-      imagePath: "Assets/Images/Image-16.png",
-      text2: "Expeditiously with tip 'T.I.' Harris",
-      text: "Greenwood Online Banking For Us By Us",
-      onPressed: () {},
-    ),
-    ListTilee(
-      imagePath: "Assets/Images/Image-16.png",
-      text2: "Expeditiously with tip 'T.I.' Harris",
-      text: "Greenwood Online Banking For Us By Us",
-      onPressed: () {},
-    ),
-    ListTilee(
-      imagePath: "Assets/Images/Image-16.png",
-      text2: "Expeditiously with tip 'T.I.' Harris",
-      text: "Greenwood Online Banking For Us By Us",
-      onPressed: () {},
-    ),
-    ListTilee(
-      imagePath: "Assets/Images/Image-16.png",
-      text2: "Expeditiously with tip 'T.I.' Harris",
-      text: "Greenwood Online Banking For Us By Us",
-      onPressed: () {},
-    ),
-    ListTilee(
-      imagePath: "Assets/Images/Image-16.png",
-      text2: "Expeditiously with tip 'T.I.' Harris",
-      text: "Greenwood Online Banking For Us By Us",
-      onPressed: () {},
-    ),
-    ListTilee(
-      imagePath: "Assets/Images/Image-16.png",
-      text2: "Expeditiously with tip 'T.I.' Harris",
-      text: "Greenwood Online Banking For Us By Us",
-      onPressed: () {},
-    ),
-    ListTilee(
-      imagePath: "Assets/Images/Image-16.png",
-      text2: "Expeditiously with tip 'T.I.' Harris",
-      text: "Greenwood Online Banking For Us By Us",
-      onPressed: () {},
-    ),
-    ListTilee(
-      imagePath: "Assets/Images/Image-16.png",
-      text2: "Expeditiously with tip 'T.I.' Harris",
-      text: "Greenwood Online Banking For Us By Us",
-      onPressed: () {},
-    ),
-    ListTilee(
-      imagePath: "Assets/Images/Image-16.png",
-      text2: "Expeditiously with tip 'T.I.' Harris",
-      text: "Greenwood Online Banking For Us By Us",
-      onPressed: () {},
-    ),
+
   ];
   List<Widget> Card2 = <Widget>[
     MusicContain(
@@ -269,6 +212,7 @@ class _HomepageState extends State<Homepage> {
     var h = MediaQuery.of(context).size.height;
     var w = MediaQuery.of(context).size.width;
     return Scaffold(
+
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
@@ -285,10 +229,11 @@ class _HomepageState extends State<Homepage> {
                 // color: Colors.pink,
                 child: Stack(children: [
                   Container(
-                    width: w,
-                    height: h,
-                    color: constants.blackBack,
-                  ),
+                      width: w,
+                      height: h,
+                      color: constants.blackBack,
+                    ),
+
                   Container(
                     child: new RotationTransition(
                       turns: new AlwaysStoppedAnimation(-90 / 360),
@@ -345,13 +290,16 @@ class _HomepageState extends State<Homepage> {
                     child: Positioned(
                       top: w / 2.3,
                       right: w / 100,
-                      child: IconButton(
+                      child:
+                      IconButton(
                         icon: Icon(
                           Icons.search,
                           size: 25,
                           color: Colors.white,
                         ),
                         onPressed: () {
+                          FirebaseAuth.instance.signOut();
+                          Navigator.pushNamed(context,   "/login",);
                           Navigator.pushNamed(context, "/Search");
                         },
                       ),
@@ -399,17 +347,19 @@ class _HomepageState extends State<Homepage> {
                       top: h / 2.6,
                       child: Container(
                         // color: Colors.green,
+                        height: h/3,
+                        width: w,
 
-                        height: h * 20,
+
                         child: ListView.builder(
                             // separatorBuilder: (BuildContext context, int index) =>
                             //     SizedBox(
                             //       width: 5,
                             //     ),
                             scrollDirection: Axis.horizontal,
-                            // physics: NeverScrollableScrollPhysics(),
+                           //  physics: NeverScrollableScrollPhysics(),
                             shrinkWrap: true,
-                            itemCount: 7,
+                            itemCount: widget.Card2.length,
                             itemBuilder: (context, index) {
                               return widget.Card2[index];
                             }),
@@ -456,17 +406,17 @@ class _HomepageState extends State<Homepage> {
                             ),
                             //  color: Colors.green,
                             width: w,
-                            height: h,
+                            height: h*2.5,
                             child: ListView.separated(
-                                separatorBuilder:
-                                    (BuildContext context, int index) =>
+                                separatorBuilder: (BuildContext context, int index) =>
+
                                         SizedBox(
                                           height: 5,
                                         ),
                                 scrollDirection: Axis.vertical,
-                                physics: NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                itemCount: 20,
+                              physics: NeverScrollableScrollPhysics(),
+                                shrinkWrap: false,
+                                itemCount:widget.listtiles.length,
                                 itemBuilder: (context, index) {
                                   return widget.listtiles[index];
                                 }),

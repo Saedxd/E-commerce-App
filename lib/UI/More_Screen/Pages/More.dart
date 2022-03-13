@@ -1,8 +1,10 @@
 import 'package:commerce_app/UI/Constants/constants.dart';
 import 'package:commerce_app/UI/Home_Screen/page/home_Page.dart';
 import 'package:commerce_app/UI/Playback/Pages/Playback.dart';
-import 'package:commerce_app/UI/Widgets/MoreListTile.dart';
+import 'package:commerce_app/UI/Widgets/Listtiles2.dart';
 import 'package:commerce_app/main.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 
@@ -15,53 +17,70 @@ class more extends StatefulWidget {
 var ctx;
 
 class _moreState extends State<more> {
-  run instance3 = run();
   Homepage instance = Homepage();
   @override
   void initState() {
     super.initState();
-    ctx = instance3.navigatorKey.currentState;
   }
 
   @override
   Widget build(BuildContext context) {
     List<Widget> MoreListTiles = <Widget>[
-      MoreListTile(
+      ListTilee2(
+        IsAboutUs: false,
         IsPlayBack: false,
         color: constants.mORElistTileColor,
         OnPressed: () {
           print("hello");
-     //     ctx.pushReplacementNamed( );
           Navigator.pushNamed(context,   "/PLayback",);
-
-
         },
         Text1: "Playback",
       ),
-      MoreListTile(
+      ListTilee2(
+        IsAboutUs: false,
         IsPlayBack: false,
         color: constants.mORElistTileColor,
-        OnPressed: () {},
+        OnPressed: () {
+          Navigator.pushNamed(context,   "/ConnectDevice",);
+
+        },
         Text1: "Connect to device",
       ),
-      MoreListTile(
+      ListTilee2(
+        IsAboutUs: false,
         IsPlayBack: false,
         color: constants.mORElistTileColor,
-        OnPressed: () {},
+        OnPressed: () {
+          Navigator.pushNamed(context,   "/Social",);
+
+        },
         Text1: "Social",
       ),
-      MoreListTile(
+      ListTilee2(
+
+        IsAboutUs: false,
         IsPlayBack: false,
         color: constants.mORElistTileColor,
-        OnPressed: () {},
+        OnPressed: () {
+          Navigator.pushNamed(context,   "/MusicQuality",);
+        },
         Text1: "Music Quality",
       ),
-      MoreListTile(
+      ListTilee2(
+        IsAboutUs: false,
         IsPlayBack: false,
         color: constants.mORElistTileColor,
-        OnPressed: () {},
+        OnPressed: () {
+          Navigator.pushNamed(context,   "/Aboutus",);
+
+
+
+
+
+        },
         Text1: "About Us",
       ),
+
     ];
     var h = MediaQuery.of(context).size.height;
     var w = MediaQuery.of(context).size.width;
@@ -71,7 +90,7 @@ class _moreState extends State<more> {
         child: Column(
           children: [
             Row(
-              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
                   child: IconButton(
@@ -85,11 +104,7 @@ class _moreState extends State<more> {
                     },
                   ),
                 ),
-                Container(
-                  child: SizedBox(
-                    width: 5,
-                  ),
-                ),
+
                 Container(
                   child: Text(
                     "More",
@@ -100,9 +115,20 @@ class _moreState extends State<more> {
                     ),
                   ),
                 ),
-                Container(//
-                    child: Text(
-                        "                                                                        ")),
+                Text(""),
+                Text(""),
+                Text(""),
+                Text(""),
+                Text(""),
+                Text(""),
+                Text(""),
+                Text(""),
+                Text(""),
+                Text(""),
+                Text(""),
+                Text(""),
+                Text(""),
+                Text(""),
                 Container(
                   child: InkWell(
                     onTap: () {
@@ -133,7 +159,7 @@ class _moreState extends State<more> {
                   scrollDirection: Axis.vertical,
                   // physics: NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
-                  itemCount: 5,
+                  itemCount: MoreListTiles.length,
                   itemBuilder: (context, index) {
                     return
                         MoreListTiles[index]; //instance.listtiles[index];

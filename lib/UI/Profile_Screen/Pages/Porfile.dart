@@ -120,7 +120,6 @@ class _ProfileState extends State<Profile> {
                         ),
                       ),
                     ),
-
                     Positioned(
                       top: w/1.49,
                       right: w/4.2,
@@ -199,7 +198,7 @@ class _ProfileState extends State<Profile> {
                     child: Text(
                       "Favourite Podcasts",
                       style: TextStyle(color: constants.white,
-                      fontSize: 9,
+                      fontSize: 10,
                         fontWeight: FontWeight.bold
                       ),
                     ))),
@@ -231,26 +230,14 @@ class _ProfileState extends State<Profile> {
         SliverList(
             delegate: SliverChildListDelegate([
       Container(
-        //color: Colors.pink,
+       // color: constants.blackBack,
         child: Stack(children: [
           Container(
             width: w,
             height: h,
             color: constants.blackBack,
           ),
-                      Positioned(
-                  top: w/80,
-                  left: w/17,
-
-                  child: Container(
-                      child: Text(
-                        "Favourite Radio Stations",
-                        style: TextStyle(color: constants.white,
-                        fontSize: 14,
-                          fontWeight: FontWeight.bold
-                        ),
-                      ))),
-                   Container(
+          Container(
                     color: constants.blackBack,
                     padding: EdgeInsets.only(
                       right: w / 40,
@@ -270,7 +257,21 @@ class _ProfileState extends State<Profile> {
                           return instance.listtiles[index];
                         }),
                   ),
+          Positioned(
+            right: w/2.2,
+            child: Container(
+                width: w/2,
+                height: 150,
 
+                child: Text(
+                  "Favourite Radio Stations",
+                  style: TextStyle(color: constants.white,
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold ),)
+
+
+            ),
+          ),
         ],),
       )
         ])),

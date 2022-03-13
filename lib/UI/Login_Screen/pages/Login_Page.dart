@@ -2,29 +2,30 @@ import 'dart:convert';
 import 'package:commerce_app/UI/Home_Screen/page/home_Page.dart';
 import 'package:commerce_app/UI/TermsOfService/Pages/Terms.dart';
 import 'package:commerce_app/UI/Widgets/Buttom_Taps.dart';
-import 'package:commerce_app/UI/Widgets/Custom_Textfield.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:commerce_app/UI/Constants/constants.dart';
 import 'package:commerce_app/UI/Widgets/Custom_btn.dart';
 import 'package:flutter/services.dart';
 import 'package:form_field_validator/form_field_validator.dart';
+import 'package:commerce_app/UI/Login_Screen/pages/shared_preferences.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class Login extends StatefulWidget {
+
   @override
   _LoginState createState() => _LoginState();
 }
 
 class _LoginState extends State<Login> {
+  bool _isSigningIn = false;
+
   TextEditingController _EmailController = TextEditingController();
   TextEditingController _PassController = TextEditingController();
   var _formkey2 = GlobalKey<FormState>(); //password
   var _formkey3 = GlobalKey<FormState>(); //email
-  var emailvalidaition =
-      r"^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))$";
-  User user;
-
+   GoogleSignIn googleSignIn;
   var auth = FirebaseAuth.instance.currentUser;
   bool SecureInput_pass = false;
   bool ISloading = false;
@@ -32,7 +33,55 @@ class _LoginState extends State<Login> {
   String _LoginPass = " ";
   String LoginAccountFeedBack;
   FocusNode _PasswordFocusNode;
+   Future<User> signInWithGoogle({ BuildContext context}) async {
+    FirebaseAuth auth = FirebaseAuth.instance;
+    User user;
 
+    if (kIsWeb) {
+      GoogleAuthProvider authProvider = GoogleAuthProvider();
+
+      try {
+        final UserCredential userCredential =
+        await auth.signInWithPopup(authProvider);
+
+        user = userCredential.user;
+      } catch (e) {
+        print(e);
+      }
+    } else {
+      googleSignIn = GoogleSignIn();
+
+      GoogleSignInAccount googleSignInAccount =
+      await googleSignIn.signIn();
+
+      if (googleSignInAccount != null) {
+        final GoogleSignInAuthentication googleSignInAuthentication =
+        await googleSignInAccount.authentication;
+
+        final AuthCredential credential = GoogleAuthProvider.credential(
+          accessToken: googleSignInAuthentication.accessToken,
+          idToken: googleSignInAuthentication.idToken,
+        );
+
+        try {
+          final UserCredential userCredential =
+          await auth.signInWithCredential(credential);
+
+          user = userCredential.user;
+        } on FirebaseAuthException catch (e) {
+          if (e.code == 'account-exists-with-different-credential') {
+            // ...
+          } else if (e.code == 'invalid-credential') {
+            // ...
+          }
+        } catch (e) {
+          // ...
+        }
+      }
+    }
+
+    return user;
+  }
   Future<void> _alreatDialogBuilder(String body, String title) async {
     return showDialog(
         barrierDismissible: false,
@@ -54,12 +103,11 @@ class _LoginState extends State<Login> {
         },
         context: context);
   }
-
   Future<String> _SignInAccount() async {
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: _loginEmail,
-          password: _LoginPass); //this code signs in. to your database
+          email: _EmailController.text,
+          password: _PassController.text); //this code signs in. to your database
       return null;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
@@ -72,7 +120,6 @@ class _LoginState extends State<Login> {
       return " exception : $e";
     }
   }
-
   void SubmitForm() async {
     try {
       //Sets the button to loading state...
@@ -117,11 +164,13 @@ class _LoginState extends State<Login> {
   void initState() {
     super.initState();
     _PasswordFocusNode = FocusNode();
-    _EmailController.addListener(() {setState(() {});});
+    _EmailController.addListener(() {setState(() {});});// this makes the textfeild watching what are you typing
 
-// this makes the textfeild watching what are you typing
-
-    _PassController.addListener(() {
+    _EmailController.text = UserSimplePreferences.GetEmail();
+    _PassController.text = UserSimplePreferences.Getpass();
+    // googleSignIn=  googleSignIn.currentUser!=null ? googleSignIn.currentUser as GoogleSignIn:null;
+    // _PassController.text = "LOL";
+    _PassController.addListener(() async{
       setState(() {});
     });
   }
@@ -131,6 +180,8 @@ class _LoginState extends State<Login> {
     super.dispose();
     //we use dispose method to prevent memmory leaks
     _PasswordFocusNode.dispose();
+    _EmailController.dispose();
+    _PassController.dispose();
   }
 
   @override
@@ -354,9 +405,12 @@ class _LoginState extends State<Login> {
                         TxtColor: constants.white,
                         textt: "Log In",
                         //this text of the button passed to the custombtn function
-                        onPressed: () {
+                        onPressed: () async{
                           print("Email is :${_loginEmail} ");
                           print("Pass is :${_LoginPass} ");
+                          await UserSimplePreferences.SetEmail(_EmailController.text);
+                          await  UserSimplePreferences.SetPass(_PassController.text);
+
                           setState(
                             () {
                               if (_formkey2.currentState.validate() &&
@@ -375,8 +429,8 @@ class _LoginState extends State<Login> {
                                 _alreatDialogBuilder(
                                     "Email and password Mustn't be Empty",
                                     "Error");
-                              } else if (!RegExp(emailvalidaition.toString())
-                                  .hasMatch(_PassController.text)) {
+                              } else if (!RegExp(constants.emailvalidaition.toString())
+                                  .hasMatch(_EmailController.text)) {
                                 _alreatDialogBuilder(
                                     "Thats not an Email", "Error");
                               } else if (_EmailController.text.isEmpty) {
@@ -438,7 +492,26 @@ class _LoginState extends State<Login> {
                         TxtColor: Colors.black45,
                         textt: "Continue With Google",
                         //this text of the button passed to the custombtn function
-                        onPressed: () {},
+                        onPressed: () async {
+                          setState(() {
+                            _isSigningIn = true;
+                          });
+
+                          User user =
+                          await signInWithGoogle(context: context);
+
+                          setState(() {
+                            _isSigningIn = false;
+                          });
+
+                          if (user != null) {
+                            Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                builder: (context) => Buttom_tabs(),
+                              ),
+                            );
+                          }
+                        },
 
                         // outlinebtn: true,Forgot your password? Change password"
                         IsLoading:
@@ -549,6 +622,41 @@ agreed to the Patch Terms of Service
     ));
   }
 }
+//   Container(
+//                 height: 570,
+//                   child: GridView.builder(
+//                       shrinkWrap: true,
+//                       itemCount: 20,
+//                       gridDelegate:
+//                       SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+//                       itemBuilder: (context, index) {
+//                         return  Container(
+//                           width: (MediaQuery.of(context).size.width / 2.4),
+//                           height: (MediaQuery.of(context).size.width / 2.4),
+//                           child: Card(
+//                             child: Column(
+//                               mainAxisAlignment: MainAxisAlignment.center,
+//                               children: [
+//                                 SvgPicture.asset (
+//                                   'assets/images/car_ins_btn.svg',
+//
+//                                   height: 80,
+//                                   width: 80,
+//                                 ),
+//                                 SizedBox(height: 15,),
+//                                 Container(
+//                                   child: Text('Motor Insurco'),
+//                                 )
+//                               ],
+//                             ),
+//                           ),
+//                         );
+//
+//
+//                         // return _tile(data[index].name, data[index].name, Icons.work);
+//                       })
+//
+//               ),
 /*
    // Container(
                    //   child: custombtn(

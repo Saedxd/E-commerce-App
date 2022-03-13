@@ -8,6 +8,7 @@ import 'package:commerce_app/UI/Widgets/Custom_btn.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:form_field_validator/form_field_validator.dart';
+import 'package:commerce_app/UI/SignUp_Screen/pages/shared_preferences.dart';
 
 class SignUp extends StatefulWidget {
   @override
@@ -18,20 +19,18 @@ class SignUp extends StatefulWidget {
 
 class _SignUpState extends State<SignUp> {
   bool _ISLoading = false;
-  FocusNode FoucesNodePass; //fouces on curser where is it at right now
-  FocusNode FoucesNodeEmail;
 
-  //FocusNode FoucesNodeEmail; //fouces on curser where is it at right now
+  FocusNode FoucesNodePass; //fouces on curser where is it at right now
+  FocusNode FoucesNodeEmail;//FocusNode FoucesNodeEmail; //fouces on curser where is it at right now
+
   var _formkey1 = GlobalKey<FormState>();
   var _formkey2 = GlobalKey<FormState>(); //password textfeild key
   var _formkey3 = GlobalKey<FormState>(); //email textfield key
   TextEditingController _EmailController = TextEditingController();
   TextEditingController _PassController = TextEditingController();
   TextEditingController _UsernameController = TextEditingController();
-  bool SecureInput_pass = false;
 
-  // this controls the hide and show password characters
-
+  bool SecureInput_pass = false;  // this controls the hide and show password characters
   String _RegisterEmail = " ";
   String _RegisterPass = " ";
   String name = " ";
@@ -57,11 +56,10 @@ class _SignUpState extends State<SignUp> {
         },
         context: context);
   }
-
   Future<String> _CreateAccount() async {
     try {
       await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: _RegisterEmail, password: _RegisterPass);
+          email: _EmailController.text, password: _PassController.text);
       return null;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
@@ -125,15 +123,15 @@ class _SignUpState extends State<SignUp> {
       _ISLoading = false;
     });
   }//[0-9 ]+
-
   void initState() {
-    _EmailController.addListener(() {
-      setState(() {});
-    }); // this makes the textfeild watching what are you typing
+    _EmailController.addListener((){ setState( ( ) { } ); }); // this makes the textfeild watching what are you typing
+    _PassController.addListener((){setState(() {});});
 
-    _PassController.addListener(() {
-      setState(() {});
-    });
+    _EmailController.text = UserSimplePreferences2.GetEmail()==null ? "":UserSimplePreferences2.GetEmail();
+    _PassController.text = UserSimplePreferences2.Getpass()==null ?"":UserSimplePreferences2.Getpass();
+    _UsernameController.text = UserSimplePreferences2.getUsername()==null?"":UserSimplePreferences2.getUsername();
+
+
     FoucesNodePass = FocusNode();
     FoucesNodeEmail = FocusNode();
     super.initState();
@@ -142,8 +140,11 @@ class _SignUpState extends State<SignUp> {
   @override
   void dispose() {
     super.dispose();
-    // TODO: implement dispose
+    FoucesNodeEmail.dispose();
     FoucesNodePass.dispose();
+    _UsernameController.dispose();
+    _PassController.dispose();
+    _EmailController.dispose();
   }
 
   @override
@@ -397,7 +398,6 @@ class _SignUpState extends State<SignUp> {
                             ]),
                       ), // textforms--------------------------------
                       Container(
-                       // color: Colors.blue,
                         height: h / 2.1,
                         padding: EdgeInsets.only(top: 0),
                         child: Column(
@@ -413,9 +413,16 @@ class _SignUpState extends State<SignUp> {
                                 TxtColor: constants.white,
                                 textt: "Sign Up",
                                 //this text of the button passed to the custombtn function
-                                onPressed: () {
+                                onPressed: () async{
+
+                                  await UserSimplePreferences2.setUsername(_UsernameController.text);
+                                  await  UserSimplePreferences2.SetPass(_PassController.text);
+                                  await  UserSimplePreferences2.SetEmail(_EmailController.text);
+
+
                                   print("Email is :${_RegisterEmail} ");
                                   print("Pass is :${_RegisterPass} ");
+                                  print("Username is :${name} ");
                                   setState(
                                     () {
                                       if (_formkey2.currentState.validate() &&
@@ -441,7 +448,7 @@ class _SignUpState extends State<SignUp> {
                                             "That is not a correct Name", "Error");
                                       }else if (!RegExp(
                                               constants.emailvalidaition.toString())
-                                          .hasMatch(_PassController.text)) {
+                                          .hasMatch(_EmailController.text)) {
                                         _alreatDialogBuilder(
                                             "Thats not an Email", "Error");
                                       } else if (_EmailController.text.isEmpty) {
@@ -637,7 +644,7 @@ class _SignUpState extends State<SignUp> {
 //
 //     ]
 // ),
-
+//
 //   var height = MediaQuery.of(context).size.height;
 //   var width = MediaQuery.of(context).size.width;//Dont use more than that.
 //

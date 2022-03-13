@@ -65,7 +65,7 @@
                     onChanged: widget.Onchanged,
                      onFieldSubmitted: widget.Onsubmitted,
                      focusNode: widget.FoucesNode,
-                     autovalidate: true,
+                     //autovalidate: true,
                     validator: MultiValidator(
                         [// the use inputs if its is email if so activate the emailvailidator if not do that minlength thingy
                           RequiredValidator(errorText: "Required"),

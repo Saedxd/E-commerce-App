@@ -1,10 +1,10 @@
 import 'package:commerce_app/UI/Widgets/AppBar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
-import 'package:motion_tab_bar/MotionTabBarView.dart';
-import 'package:motion_tab_bar/MotionTabController.dart';
-import 'package:motion_tab_bar/TabItem.dart';
-import 'package:motion_tab_bar/motiontabbar.dart';
+// import 'package:motion_tab_bar/MotionTabBarView.dart';
+// import 'package:motion_tab_bar/MotionTabController.dart';
+// import 'package:motion_tab_bar/TabItem.dart';
+// import 'package:motion_tab_bar/motiontabbar.dart';
 
 class Product extends StatefulWidget {
 

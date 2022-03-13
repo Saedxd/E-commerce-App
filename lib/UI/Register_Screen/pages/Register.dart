@@ -68,7 +68,7 @@ class _RegisterState extends State<Register> {
     if (CreateAccountFeedBack != null) {
       _alreatDialogBuilder(CreateAccountFeedBack);
     }
-    Navigator.push(context,  MaterialPageRoute(builder: (context) => HomePage()), );
+    //Navigator.push(context,  MaterialPageRoute(builder: (context) => HomePage()), );
 
 
     print("done");
@@ -129,7 +129,7 @@ class _RegisterState extends State<Register> {
                           SubmitForm();
                         });
                       },
-                      outlinebtn: true,
+                      //outlinebtn: true,
                       IsLoading: widget._ISLoading, //this colors the button
                     )
                   ],
@@ -144,7 +144,7 @@ class _RegisterState extends State<Register> {
                   onPressed: () {  Navigator.pop(context);  },
 
 
-                  outlinebtn: false,
+                  //outlinebtn: false,
                   IsLoading: false,
                 ),
               ),
